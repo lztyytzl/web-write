@@ -1,0 +1,89 @@
+<html lang="UTF-8">
+    <title>这是一个示例</title>
+    <head>
+        <style>
+            .box {
+                display: flex;
+                justify-content: space-around;
+            }
+        </style>
+    </head>
+    <body>
+        Vue响应式实现原理
+        <div class="box">
+            <div>
+                <p>
+                    <li class="name"></li>
+                    <li class="age"></li>
+                </p>
+                <input id="ipt" type="text" oninput="data.name = this.value">
+                <button onclick="btnChange()">vue2 change</button>
+            </div>
+            <div>
+                <p>
+                    <li id="name"></li>
+                    <li id="age"></li>
+                </p>
+                <input type="text" oninput="data2.name = this.value">
+                <button onclick="btn2Change()">vue3 change</button>
+                <button onclick="removeItem()">remove item</button>
+            </div>
+        </div>
+        <div class="list">
+        </div>
+        <script src="define-vue2.js"></script>
+        <script src="proxy-vue3.js"></script>
+        <script>
+            const data = {
+                name: '龙',
+                age: 19
+            }
+            const data2 = reactive({
+                name: "卡萨丁",
+                age: 20,
+                list: [
+                    1, 2, 3, 4, 5, 6
+                ]
+            })
+            observer(data)
+            function btnChange() {
+                data.age = parseInt(Math.random() * 100)
+            }
+            function btn2Change() {
+                data2.age = parseInt(Math.random() * 100)
+            }
+            function removeItem() {
+                if (data2.list.length > 1) {
+                    data2.list.splice(0, 1)
+                    _run(init2)
+                }
+            }
+            const dom1 = document.querySelector('.name')
+            const dom2 = document.querySelector('.age')
+            const dom3 = document.querySelector('#name')
+            const dom4 = document.querySelector('#age')
+            const listDom = document.querySelector('.list')
+            function init() {
+                dom1.textContent = data.name
+                dom2.textContent = data.age
+            }
+            runFun(init)
+            function init2() {
+                dom3.textContent = data2.name
+                dom4.textContent = data2.age
+                createDom()
+            }
+            _run(init2)
+            function createDom() {
+                const domF = document.createDocumentFragment()
+                data2.list.length > 0 && listDom.replaceChildren()
+                for (i in data2.list) {
+                    const _li = document.createElement('li')
+                    _li.textContent = i
+                    domF.appendChild(_li)
+                }
+                listDom.appendChild(domF)
+            }
+        </script>
+    </body>
+</html>

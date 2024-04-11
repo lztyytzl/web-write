@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/duration.js"></script>
+    <script>dayjs.extend(window.dayjs_plugin_duration)</script>
+    <script>
+        window.onload = function() {
+            dayjs().format();
+            var x = dayjs(new Date())
+            var y = dayjs("2024-04-10 23:00:00")
+            var duration = dayjs.duration(x.diff(y))
+            console.log(duration)
+            const { years, months, days, minutes, hours, seconds } = duration.$d
+            var fmt = dayjs.duration({ years, months, days, minutes, hours, seconds }).format('YYYY年-MM月-DD日 HH时:mm分:ss秒')
+            console.log(fmt)
+        }
+    </script>
+</body>
+</html>

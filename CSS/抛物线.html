@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>抛物线</title>
+    <style>
+        body {
+            height: 100%;
+        }
+        .item,
+        .item2 {
+            width: 20px;
+            height: 20px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 6;
+            background-color: #fff;
+            border-radius: 50%;
+            transition: 1s linear;
+
+        }
+        .item2-in {
+            width: 20px;
+            height: 20px;
+            background-color: #00aa00;
+            display: block;
+            border-radius: 50%;
+            transition: 1s cubic-bezier(0.11, -0.1, .55, .11);
+        }
+
+        /*竖直运动*/
+        .wraper {
+            animation: hor-animation 1s linear;
+        }
+
+        /*水平运动*/
+        .wraper .item {
+            animation: vertical-animation 1s cubic-bezier(.11, -0.1, .55, .11);
+        }
+
+        @keyframes hor-animation {
+
+            0% {
+                transform: translateX(0px);
+            }
+
+            100% {
+                transform: translateX(-400px);
+            }
+
+        }
+
+        @keyframes vertical-animation {
+
+            0% {
+                transform: translateY(0px);
+            }
+
+            100% {
+                transform: translateY(400px);
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        window.onload = function() {
+            const endPosition = {
+                x: 70,
+                y: 600
+            }
+            function inieListener() {
+                document.addEventListener('mousedown', debounce((e) => {
+                    console.log(e.offsetX, e.offsetY);
+                    const startPosition = {
+                        x: e.offsetX,
+                        y: e.offsetY
+                    }
+                    let transDom = document.createElement('div');
+                    transDom.className = 'item2'
+                    let transInDom = document.createElement('i');
+                    transInDom.className = 'item2-in'
+                    transDom.style.transform = `translateX(${startPosition.x}px)`;
+                    transInDom.style.transform = `translateY(${startPosition.y}px)`;
+                    transDom.appendChild(transInDom);
+                    document.body.appendChild(transDom);
+                    requestAnimationFrame(function() {
+                        transDom.style.transform = `translateX(${endPosition.x}px)`;
+                        transInDom.style.transform = `translateY(${endPosition.y}px)`;
+                    }, 50)
+                    document.addEventListener('transitionend', function() {
+                        // transDom.remove()
+                    }, {
+                        once: true
+                    })
+                }))
+            }
+            inieListener();
+            function debounce(fn, delay = 500) {
+                let timer = null
+                return function() {
+                    if (timer) {
+                        clearTimeout(timer)
+                    }
+                    timer = setTimeout(() => {
+                        fn.apply(this, arguments)
+                        timer = null
+                    }, delay)
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

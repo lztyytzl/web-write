@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .anm {
+            width: 80px;
+            height: 80px;
+            background-color: aqua;
+        }
+    </style>
+</head>
+<body>
+    <div class="anm"></div>
+    <script>
+        const dom = document.querySelector('.anm')
+            let curWidth = 80
+            const newWidth = 620
+            
+            function animate() {
+                curWidth = curWidth + 2
+                console.log(curWidth);
+                dom.style.width = `${curWidth}px`
+                if (curWidth < newWidth) {
+                    window.requestAnimationFrame(animate)
+                }
+            }
+            animate()
+    </script>
+</body>
+</html>

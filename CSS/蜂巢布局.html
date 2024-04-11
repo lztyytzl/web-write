@@ -1,0 +1,125 @@
+<html lang="utf-8">
+    <body>
+        <style>
+            :root {
+                --n: 9;
+                --size: calc(100vw / var(--n));
+            }
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            .line {
+                display: flex;
+                margin-top: calc(0px - calc(var(--size)/6));
+                overflow: hidden;
+            }
+            .line:nth-child(even) {
+                margin-left: calc(0px - calc(var(--size)/2));
+            }
+            item {
+                display: flex;
+                flex-shrink: 0;
+                width: var(--size);
+                height: var(--size);
+                background-color: aqua;
+                outline: 2px solid black;
+                clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
+            }
+        </style>
+        <div>
+            <div class="line">
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+            </div>
+            <div class="line">
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+            </div>
+            <div class="line">
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+            </div>
+            <div class="line">
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+            </div>
+            <div class="line">
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+            </div>
+            <div class="line">
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+            </div>
+            <div class="line">
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+            </div>
+            <div class="line">
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+                <item></item>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box {
+           width: 200px;
+           padding: 6px;
+           height: 80px;
+           border: 1px solid; 
+           margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="box"></div>
+    <script>
+        console.time('init')
+        const arr = []
+        let timer = null
+        const dm = document.querySelector('.box')
+        for (let index = 0; index < 100000000; index++) {
+            arr.push(index)
+        }
+        console.timeEnd('init')
+        if (window.Worker) {
+            const myWorker = new Worker("worker.js");
+            myWorker.postMessage({ delay: 1000 })
+            myWorker.onmessage = (e) => {
+                console.log(e.data);
+            }
+        } else {
+            console.log('当前浏览器不支持web worker');
+        }
+    </script>
+</body>
+</html>

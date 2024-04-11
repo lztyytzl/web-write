@@ -132,3 +132,8 @@ MyPromise.race = function (promiseList = []) {
       })  
     })
 }
+
+const p = new MyPromise((resolve, reject) => {
+    resolve('ok')
+})
+console.log(p);
