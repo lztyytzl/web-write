@@ -29,6 +29,7 @@
             const myWorker = new Worker("worker.js");
             myWorker.postMessage({ delay: 1000 })
             myWorker.onmessage = (e) => {
+                // myWorker.terminate();
                 console.log(e.data);
             }
         } else {

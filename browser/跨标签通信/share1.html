@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我要发送消息</title>
+</head>
+<body>
+    <div>
+        <input id="msg"/>
+        <button id="btn">发送消息</button>
+    </div>
+    <!-- <script src="./broadcast.js"></script> -->
+    <script>
+        const btn = document.querySelector("#btn");
+        // service worker通信
+        // navigator.serviceWorker.register('sw.js').then(function (registration) {
+        //     // 注册成功
+        //     console.log('registration successful');
+        // }).catch(function (error) {
+        //     // 注册失败
+        //     console.log('registration failed with ' + error);
+        // });
+        // btn.onclick = function () {
+        //     navigator.serviceWorker.controller.postMessage(document.querySelector("#msg").value);
+        // }
+        
+        // shared worker通信
+        const worker = new SharedWorker('share-worker.js')
+        btn.onclick = () => {
+            worker.port.postMessage(document.querySelector("#msg").value);
+        }
+
+    </script>
+</body>
+</html>

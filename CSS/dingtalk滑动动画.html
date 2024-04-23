@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>滚动动画加载</title>
+    <style>
+        body {
+            margin: 0;
+        }
+        .playground {
+            height: 250vh;
+            background-color: #000000;
+        }
+        .animation-container {
+            position: sticky;
+            overflow: hidden;
+            height: 100vh;
+            top: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .list {
+            max-width: 600px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            position: relative;
+
+        }
+        .list-item {
+            width: 60px;
+            height: 60px;
+            margin: 40px 10px;
+            border-radius: 6px;
+            background-color: aquamarine;
+            transform-origin: 50% 50%;
+        }
+        div[data-order="0"] {
+            background-color: aqua;
+        }
+        div[data-order="1"] {
+            background-color: yellow;
+        }
+        div[data-order="2"] {
+            background-color: orange;
+        }
+        div[data-order="3"] {
+            background-color: springgreen;
+        }
+    </style>
+</head>
+<body>
+    <div class="playground">
+        <div class="animation-container">
+            <div class="list">
+                <div data-order="0" class="list-item"></div>
+                <div data-order="1" class="list-item"></div>
+                <div data-order="2" class="list-item"></div>
+                <div data-order="3" class="list-item"></div>
+                <div data-order="2" class="list-item"></div>
+                <div data-order="1" class="list-item"></div>
+                <div data-order="0" class="list-item"></div>
+                <div data-order="0" class="list-item"></div>
+                <div data-order="1" class="list-item"></div>
+                <div data-order="2" class="list-item"></div>
+                <div data-order="3" class="list-item"></div>
+                <div data-order="2" class="list-item"></div>
+                <div data-order="1" class="list-item"></div>
+                <div data-order="0" class="list-item"></div>
+            </div>
+        </div>
+    </div>
+    <div style="height: 300px;">
+        内容区域
+    </div>
+    <script>
+        function createAnimation(scrollStart, scrollEnd, startValue, endValue) {
+            return function(x) {
+                // console.log(x, scrollStart, scrollEnd, startValue, endValue)
+                if (x < scrollStart) {
+                    return startValue;
+                }
+                if (x > scrollEnd) {
+                    return endValue
+                }
+                const progress = (x - scrollStart) / (scrollEnd - scrollStart);
+                return startValue + (endValue - startValue) * progress;
+            }
+        }
+
+        const animationMap = new Map();
+        const items = document.querySelectorAll('.list-item');
+        const playGround = document.querySelector('.playground');
+        const list = document.querySelector('.list');
+        
+        function getDomAnimation(scrollStart, scrollEnd, dom) {
+            scrollStart += dom.dataset.order * 80;
+            const opacityAnimation = createAnimation(scrollStart, scrollEnd, 0, 1);
+            const opacity = function(x) {
+                return opacityAnimation(x);
+            }
+
+            const scaleAnimation = createAnimation(scrollStart, scrollEnd, 0, 1);
+            const { clientHeight, clientWidth, offsetLeft, offsetTop } = dom;
+            const rect = list.getBoundingClientRect();
+            const xAnimation = createAnimation(scrollStart, scrollEnd, rect.width / 2 - clientWidth / 2 - offsetLeft, 0);
+            const yAnimation = createAnimation(scrollStart, scrollEnd, rect.height / 2 - clientHeight/ 2 - offsetTop, 0);
+            
+            const transform = function(x) {
+                return `translate3d(${xAnimation(x)}px, ${yAnimation(x)}px, 5px) scale(${scaleAnimation(x)})`;
+                return `scale(${scaleAnimation(x)})`;
+            }
+            return {
+                transform,
+                opacity
+            }
+        }
+        // 设置更新动画映射
+        function updateMap() {
+            const playGroundRect = playGround.getBoundingClientRect();
+            const scrollY = window.scrollY;
+            const scrollStart = playGroundRect.top + scrollY;
+            const scrollEnd = playGroundRect.bottom + scrollY - window.innerHeight;
+            for (const item of items) {
+                animationMap.set(item, getDomAnimation(scrollStart, scrollEnd, item));
+            }
+        }
+        updateMap();
+        // 将map结构中得动画应用到元素上
+        function updateStyles() {
+            const scrollY = window.scrollY;
+            for (const [dom, animations] of animationMap) {
+                for (const prop in animations) {
+                    const value = animations[prop](scrollY);
+                    dom.style[prop] = value
+                }
+            }
+        }
+        updateStyles();
+        window.addEventListener('scroll', updateStyles);
+
+    </script>
+</body>
+</html>

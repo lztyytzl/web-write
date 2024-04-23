@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我要接收消息</title>
+    <style>
+        .msgBox {
+            width: auto;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="msgBox" contenteditable="true">
+    </div>
+    <script>
+        // 创建广播通道接受消息
+        // var msgBox = document.querySelector('.msgBox');
+        // const bradCasetChannel = new BroadcastChannel('channel');
+        // bradCasetChannel.onmessage = function (e) {
+        //     console.log(e.data);
+        //     msgBox.innerHTML = e.data.msg;
+        // }
+        // window.onbeforeunload = (e) =>{
+        //     console.log(e);
+        //     broadCaseChannel.close();
+        // }
+
+        // service worker通信
+        // navigator.serviceWorker.register('sw.js')
+        //     .then(() => {
+        //         console.log("service worker 注册成功");
+        //     });
+        // navigator.serviceWorker.onmessage = function ({ data }) {
+        //     console.log(data);
+        //     document.querySelector('.msgBox').innerHTML = data;
+        // }
+
+        // shared worker通信
+        const sharedWorker = new SharedWorker('share-worker.js');
+        sharedWorker.port.start()
+        sharedWorker.port.addEventListener('message', ({ data }) => {
+            if (data) {
+                document.querySelector('.msgBox').innerHTML = data;
+            }
+        }, false)
+        setInterval(() => {
+            sharedWorker.port.postMessage('get')
+        }, 1000)
+    </script>
+</body>
+</html>
