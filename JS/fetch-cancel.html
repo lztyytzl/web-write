@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fetch请求取消</title>
+</head>
+<body>
+    <input type="text" id="key">
+    <script>
+        const input = document.querySelector("#key");
+        let controller;
+        input.oninput = async () => {
+            controller && controller.abort();
+            controller = new AbortController();
+            const list = fetch('https://www.baidu.com/s?wd=' + input.value,
+            {
+                signal: controller.signal
+            }).then(response => response);
+            createSuggest(list);
+        }
+    </script>
+</body>
+</html>
